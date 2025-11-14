@@ -1,0 +1,13 @@
+package xyz.larchy.sicei;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SiceiApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SiceiApplication.class, args);
+	}
+
+}
