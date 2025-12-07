@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import xyz.larchy.sicei.Models.Profesor;
-import xyz.larchy.sicei.Services.ProfesorService;
+import xyz.larchy.sicei.Services.Implementation.ProfesorService;
 
 import java.util.ArrayList;
 

@@ -1,32 +1,30 @@
 package xyz.larchy.sicei.Models;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import jakarta.persistence.*;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@Entity
+@Table(name = "profesores")
 public class Profesor {
-    @NotNull(message = "el campo 'id' no debe estar vacio")
-    @Min(value = 0, message = "El id no puede ser negativo")
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotNull(message = "el campo 'numeroEmpleado' no debe estar vacio")
-    @Min(value = 0, message = "El numeroEmpleado no puede ser negativo")
-    private int numeroEmpleado;
-
-    @NotEmpty(message = "el campo 'nombres' no debe estar vacio")
+    @Column(nullable = false, length = 100)
     private String nombres;
 
-    @NotEmpty(message = "el campo 'apellidos' no debe estar vacio")
+    @Column(nullable = false, length = 100)
     private String apellidos;
 
-    @NotNull(message = "el campo 'horasClase' no debe estar vacio")
-    @Min(value = 0, message = "Las horasClase no puede ser negativo")
-    private int horasClase;
+    @Column(nullable = false, unique = true)
+    private int numeroEmpleado;
 
+    @Column(nullable = false)
+    private int horasClase;
 }

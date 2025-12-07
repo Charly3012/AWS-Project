@@ -1,6 +1,6 @@
 package xyz.larchy.sicei.Models;
 
-import jakarta.validation.constraints.*;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
@@ -9,19 +9,28 @@ import lombok.*;
 @Getter
 @Setter
 @EqualsAndHashCode
+@Entity
+@Table(name = "alumnos")
 public class Alumno {
-
-    @NotNull(message = "el campo  'id' no debe estar vacio")
-    @Min(value = 0, message = "El id no puede ser negativo")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @NotEmpty(message = "el campo  'nombre' no debe estar vacio")
+
+    @Column(nullable = false, length = 100)
     private String nombres;
-    @NotEmpty(message = "el campo 'apellido' no debe estar vacio")
+
+    @Column(nullable = false, length = 100)
     private String apellidos;
-    @NotEmpty(message = "el campo 'matricula' no debe estar vacio")
+
+    @Column(nullable = false, length = 50, unique = true)
     private String matricula;
-    @NotNull(message = "el campo 'promedio' no debe ser nulo")
-    @Min(value = 0, message = "El promedio no puede ser negativo")
-    @Max(value = 100,message = "El promedio no pude ser mayor a 100")
+
+    @Column(nullable = false)
     private Double promedio;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column()
+    private String fotoPerfilUrl;
 }
