@@ -65,7 +65,11 @@ public class ProfesorService implements IProfesorService {
     @Override
     public boolean deleteProfesor(int id) {
         try{
-            profesorRepository.deleteById(id);
+            var guessProfesor = profesorRepository.findById(id);
+            if(guessProfesor.isEmpty()){
+                return false;
+            }
+            profesorRepository.delete(guessProfesor.get());
             return true;
         }catch(Exception ex){
             return false;

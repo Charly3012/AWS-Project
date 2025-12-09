@@ -2,6 +2,7 @@ package xyz.larchy.sicei.Controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,8 +77,13 @@ public class AlumnoController {
     }
 
     @PostMapping("{id}/email")
-    public ResponseEntity<String> sendEmail(@PathVariable int id) {
-        alumnoService.sendEmail(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity sendEmail(@PathVariable int id) {
+        boolean response = alumnoService.sendEmail(id);
+        if (response){
+            return ResponseEntity.status(200)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("{\"message\": \"Email enviado con éxito\"}");
+        }
+        return ResponseEntity.notFound().build();
     }
 }

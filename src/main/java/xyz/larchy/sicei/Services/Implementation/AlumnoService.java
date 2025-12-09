@@ -77,7 +77,11 @@ public class AlumnoService implements IAlumnoService {
     @Override
     public boolean deleteAlumno(int id) {
         try{
-            alumnoRepository.deleteById(id);
+            var guessAlumno = alumnoRepository.findById(id);
+            if(guessAlumno.isEmpty()){
+                return false;
+            }
+            alumnoRepository.delete(guessAlumno.get());
             return true;
         }catch(Exception e){
             return false;
@@ -100,10 +104,10 @@ public class AlumnoService implements IAlumnoService {
     }
 
     @Override
-    public void sendEmail(int id){
+    public boolean sendEmail(int id){
         var alumnoRequest = alumnoRepository.findById(id);
         if(alumnoRequest.isEmpty()) {
-            return;
+            return false;
         }
 
         var alumno = alumnoRequest.get();
@@ -111,5 +115,6 @@ public class AlumnoService implements IAlumnoService {
         String body = "El promedio del alumno es " + alumno.getPromedio();
 
         notificationService.sendNotification(subject, body);
+        return true;
     }
 }
