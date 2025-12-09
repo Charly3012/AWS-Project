@@ -3,14 +3,14 @@ package xyz.larchy.sicei.Services.Implementation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import xyz.larchy.sicei.Models.Alumno;
-import xyz.larchy.sicei.Models.Common.ServiceResponse;
 import xyz.larchy.sicei.Models.Request.InsertAlumnoRequestDTO;
 import xyz.larchy.sicei.Models.Request.UpdateAlumnoRequestDTO;
 import xyz.larchy.sicei.Repository.AlumnoRepository;
 import xyz.larchy.sicei.Services.IAlumnoService;
 
-import javax.swing.text.html.Option;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -20,6 +20,7 @@ public class AlumnoService implements IAlumnoService {
 
     private final AlumnoRepository alumnoRepository;
     private final PasswordEncoder passwordEncoder;
+    private final S3Service s3Service;
 
     @Override
     public ArrayList<Alumno> getAlumnos() {
@@ -79,5 +80,20 @@ public class AlumnoService implements IAlumnoService {
         }catch(Exception e){
             return false;
         }
+    }
+
+    @Override
+    public boolean uploadPhotoProfile(int id, MultipartFile file) throws IOException {
+        var alumno =  alumnoRepository.findById(id);
+        if(alumno.isEmpty()) {
+            return false;
+        }
+
+        String filePath = s3Service.uploadPerfilPhotos(file);
+        var newAlumno = alumno.get();
+        newAlumno.setFotoPerfilUrl(filePath);
+
+        alumnoRepository.save(newAlumno);
+        return true;
     }
 }
