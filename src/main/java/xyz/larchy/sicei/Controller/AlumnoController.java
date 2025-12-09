@@ -38,7 +38,7 @@ public class AlumnoController {
             var response = new InsertAlumnoResponseDTO(id);
             return ResponseEntity.status(201).body(response);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping("{id}")

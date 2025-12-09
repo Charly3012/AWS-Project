@@ -3,7 +3,7 @@ package xyz.larchy.sicei.Models.Request;
 import jakarta.validation.constraints.*;
 import xyz.larchy.sicei.Models.Profesor;
 
-public record InsertProfersorDTO(
+public record InsertProfesorRequestDTO(
         @NotNull(message = "el campo 'numeroEmpleado' no debe estar vacio")
         @Min(value = 0, message = "El numeroEmpleado no puede ser negativo")
         int numeroEmpleado,

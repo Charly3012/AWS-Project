@@ -1,31 +1,74 @@
 package xyz.larchy.sicei.Services.Implementation;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.larchy.sicei.Models.Common.ServiceResponse;
 import xyz.larchy.sicei.Models.Profesor;
+import xyz.larchy.sicei.Models.Request.InsertProfesorRequestDTO;
+import xyz.larchy.sicei.Models.Request.UpdateProfesorRequestDTO;
+import xyz.larchy.sicei.Repository.ProfesorRepository;
+import xyz.larchy.sicei.Services.IProfesorService;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-public class ProfesorService {
+@RequiredArgsConstructor
+public class ProfesorService implements IProfesorService {
 
-    public ArrayList<Profesor> getProfesores() {
-        return null;
+    private final ProfesorRepository profesorRepository;
+
+    @Override
+    public List<Profesor> getProfesores() {
+        return new ArrayList<Profesor>(profesorRepository.findAll());
     }
 
-    public Profesor getProfesor(int id) {
-        return null;
+    @Override
+    public Optional<Profesor> getProfesor(int id) {
+        return profesorRepository.findById(id);
     }
 
-    public ServiceResponse<Profesor> insertProfesor(Profesor profesor) {
-        return null;
+    @Override
+    public int insertProfesor(InsertProfesorRequestDTO profesor) {
+        var newProfesor = profesor.toEntity();
+        return profesorRepository.save(newProfesor).getId();
     }
 
-    public ServiceResponse<Profesor> updateProfesor(int id, Profesor profesorNuevosDatos) {
-        return null;
+    @Override
+    public Optional<Profesor> updateProfesor(int id, UpdateProfesorRequestDTO profesor) {
+        var oldProfesor = profesorRepository.findById(id);
+
+        if (oldProfesor.isEmpty()) {
+            return Optional.empty();
+        }
+
+        var newProfesor = oldProfesor.get();
+        var profesorFromRequest = profesor.toEntity();
+
+        if(profesorFromRequest.getNombres() != null && !profesorFromRequest.getNombres().isEmpty()){
+            newProfesor.setNombres(profesorFromRequest.getNombres());
+        }
+        if(profesorFromRequest.getApellidos() != null && !profesorFromRequest.getApellidos().isEmpty()){
+            newProfesor.setApellidos(profesorFromRequest.getApellidos());
+        }
+        if(profesorFromRequest.getHorasClase() > 0){
+            newProfesor.setHorasClase(profesorFromRequest.getHorasClase());
+        }
+        if(profesorFromRequest.getNumeroEmpleado() > 0){
+            newProfesor.setNumeroEmpleado(profesorFromRequest.getNumeroEmpleado());
+        }
+
+        profesorRepository.save(newProfesor);
+        return Optional.of(newProfesor);
     }
 
-    public ServiceResponse<Profesor> deleteProfesor(int id) {
-        return null;
+    @Override
+    public boolean deleteProfesor(int id) {
+        try{
+            profesorRepository.deleteById(id);
+            return true;
+        }catch(Exception ex){
+            return false;
+        }
     }
 }

@@ -1,0 +1,24 @@
+package xyz.larchy.sicei.Models.Request;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import xyz.larchy.sicei.Models.Profesor;
+
+public record UpdateProfesorRequestDTO(
+    @Min(value = 0, message = "El numeroEmpleado no puede ser negativo")
+    int numeroEmpleado,
+    String nombres,
+    String apellidos,
+    @Min(value = 0, message = "Las horasClase no puede ser negativo")
+    int horasClase
+) {
+    public Profesor toEntity(){
+        return Profesor.builder()
+                .numeroEmpleado(this.numeroEmpleado)
+                .nombres(this.nombres)
+                .apellidos(this.apellidos)
+                .horasClase(this.horasClase)
+                .build();
+    }
+}
