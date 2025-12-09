@@ -16,4 +16,5 @@ public interface IAlumnoService {
     Optional<Alumno> updateAlumno(int id, UpdateAlumnoRequestDTO alumno);
     boolean deleteAlumno(int id);
     boolean uploadPhotoProfile(int id, MultipartFile file) throws IOException;
+    void sendEmail(int id);
 }

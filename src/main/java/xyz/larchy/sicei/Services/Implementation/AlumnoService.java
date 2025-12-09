@@ -9,6 +9,7 @@ import xyz.larchy.sicei.Models.Request.InsertAlumnoRequestDTO;
 import xyz.larchy.sicei.Models.Request.UpdateAlumnoRequestDTO;
 import xyz.larchy.sicei.Repository.AlumnoRepository;
 import xyz.larchy.sicei.Services.IAlumnoService;
+import xyz.larchy.sicei.Services.INotificationService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class AlumnoService implements IAlumnoService {
     private final AlumnoRepository alumnoRepository;
     private final PasswordEncoder passwordEncoder;
     private final S3Service s3Service;
+    private final INotificationService notificationService;
 
     @Override
     public ArrayList<Alumno> getAlumnos() {
@@ -95,5 +97,19 @@ public class AlumnoService implements IAlumnoService {
 
         alumnoRepository.save(newAlumno);
         return true;
+    }
+
+    @Override
+    public void sendEmail(int id){
+        var alumnoRequest = alumnoRepository.findById(id);
+        if(alumnoRequest.isEmpty()) {
+            return;
+        }
+
+        var alumno = alumnoRequest.get();
+        String subject = "Calificaciones del alumno " + alumno.getNombres() + " " +  alumno.getApellidos();
+        String body = "El promedio del alumno es " + alumno.getPromedio();
+
+        notificationService.sendNotification(subject, body);
     }
 }

@@ -11,6 +11,7 @@ import xyz.larchy.sicei.Models.Request.InsertAlumnoRequestDTO;
 import xyz.larchy.sicei.Models.Request.UpdateAlumnoRequestDTO;
 import xyz.larchy.sicei.Services.IAlumnoService;
 import xyz.larchy.sicei.Services.IS3Service;
+import xyz.larchy.sicei.Services.Implementation.AlumnoService;
 
 import java.io.IOException;
 import java.util.List;
@@ -72,5 +73,11 @@ public class AlumnoController {
         }catch(Exception ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+
+    @PostMapping("{id}/email")
+    public ResponseEntity<String> sendEmail(@PathVariable int id) {
+        alumnoService.sendEmail(id);
+        return ResponseEntity.ok().build();
     }
 }
