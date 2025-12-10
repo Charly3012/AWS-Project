@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import xyz.larchy.sicei.CustomExceptions.NotFoundException;
 import xyz.larchy.sicei.Models.Alumno;
 import xyz.larchy.sicei.Models.Request.InsertAlumnoRequestDTO;
 import xyz.larchy.sicei.Models.Request.UpdateAlumnoRequestDTO;
@@ -89,10 +90,10 @@ public class AlumnoService implements IAlumnoService {
     }
 
     @Override
-    public boolean uploadPhotoProfile(int id, MultipartFile file) throws IOException {
+    public String uploadPhotoProfile(int id, MultipartFile file) throws IOException {
         var alumno =  alumnoRepository.findById(id);
         if(alumno.isEmpty()) {
-            return false;
+            throw new NotFoundException("Alumno no encontrado");
         }
 
         String filePath = s3Service.uploadPerfilPhotos(file);
@@ -100,7 +101,7 @@ public class AlumnoService implements IAlumnoService {
         newAlumno.setFotoPerfilUrl(filePath);
 
         alumnoRepository.save(newAlumno);
-        return true;
+        return filePath;
     }
 
     @Override

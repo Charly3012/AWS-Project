@@ -15,6 +15,6 @@ public interface IAlumnoService {
     int insertAlumno(InsertAlumnoRequestDTO alumno);
     Optional<Alumno> updateAlumno(int id, UpdateAlumnoRequestDTO alumno);
     boolean deleteAlumno(int id);
-    boolean uploadPhotoProfile(int id, MultipartFile file) throws IOException;
+    String uploadPhotoProfile(int id, MultipartFile file) throws IOException;
     boolean sendEmail(int id);
 }

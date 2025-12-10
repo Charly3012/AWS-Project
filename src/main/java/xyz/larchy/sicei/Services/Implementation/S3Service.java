@@ -40,7 +40,7 @@ public class S3Service implements IS3Service {
         s3Client.putObject(putObjectRequest,
                 RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
 
-        return String.format("https://%s.s3.%s.amazonaws.com/%s",
-                bucketName, s3Client.serviceClientConfiguration().region().id(), keyName);
+        return String.format("https://%s.s3.amazonaws.com/%s",
+                bucketName, keyName);
     }
 }
